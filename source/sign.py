@@ -4,6 +4,7 @@
 # date : 2022-10-06
 
 import requests, re
+import log
 
 
 def login(user, retry=False):
@@ -11,6 +12,7 @@ def login(user, retry=False):
     :param user:用户信息
     :return : 传回登陆成功的cookie
     """
+    logger = log.logger_config(logging_name='sign')
     # 姓名，学号，密码，学校编码
     name = user.get("name")
     stucode = user.get("stucode")
@@ -32,6 +34,7 @@ def login(user, retry=False):
         errmsg = res.json().get("errmsg")
         if errmsg.find("错误") != -1:
             print(name + " " + errmsg)
+            logger.warning('{}, Login error, {}'.format(user.get('stucode'),errmsg))
             return "登录错误"
         cook2 = res.headers['set-cookie'].split(";")[0]
 
@@ -44,10 +47,12 @@ def login(user, retry=False):
         return cook3
     except requests.exceptions.ConnectionError as e:
         print("网络错误",e)
+        logger.error('Network error')
         return "网络错误"
     except KeyError:
         if retry:
             print(name + " 登录错误")
+            logger.warning('{}, Login error'.format(user.get('stucode')))
             return "登录错误"
         else:
             return login(user,True)
