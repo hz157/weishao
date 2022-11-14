@@ -1,8 +1,7 @@
 # Json 文件说明
-> 该项目中Json文件用于存放执行参数，截至2022年11月14日，共有4个json文件，分别为👇
+> 该项目中Json文件用于存放执行参数，截至2022年11月14日，共有3个json文件，分别为👇
 
 - config.json 脚本执行参数
-- info.json 打卡信息内容
 - mail.json 邮件配置参数
 - users.json 用户参数
 
@@ -15,10 +14,6 @@
     }
 ]
 ```
-
-### info.json
-
-自行使用软件抓包获取发送weishao服务器的json数据包，更改有关数据
 
 ### mail.json 
 ```json
