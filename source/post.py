@@ -2,10 +2,12 @@
 # author : ryanzhang
 # fileName : post.py
 # date : 2022-10-06
+import os
 
-from webbrowser import get
+import json
 import requests
 import getinfo
+import log
 
 
 def run(studata,cook):
@@ -16,9 +18,11 @@ def run(studata,cook):
     """
     # 读取个人提交信息
     info = getinfo.data(studata, cook)
-    if info == 0:
-        print("今日打卡已完成，自动打卡取消\n")
-        return "已完成"
+    logger = log.logger_config(logging_name='post')
+    # if info == 0:
+    #     print("今日打卡已完成，自动打卡取消\n")
+    #     return "已完成"
+
     # 提交今日打卡
     url = 'https://yq.weishao.com.cn/api/questionnaire/questionnaire/addMyAnswer'
     head = {
@@ -31,7 +35,7 @@ def run(studata,cook):
         "Accept-Encoding": "gzip, deflate"
     }
     info = {
-        "sch_code": "xmut",
+        "sch_code": studata.get('schoolcode'),
         "stu_code": studata.get('stucode'),
         "stu_name": studata.get('name'),
         "identity": "student",
@@ -489,9 +493,12 @@ def run(studata,cook):
         "private_id": 0
     }
     data = requests.post(url, json=info, headers=head)
-    if data.get("errcode") == 0:
+    jsonData = json.loads(data.text)
+    if jsonData.get("errcode") == 0:
         print("打卡成功！")
+        logger.info('{},Sign in successfully'.format(studata.get('stucode')))
         return "成功！"
     else:
-        print("---未知的errcode\n" + str(data) + "\n")
+        print("---未知的errcode\n" + str(jsonData) + "\n")
+        logger.warning('{},Failed to sign in,Error prompt: {}'.format(studata.get('stucode'),str(jsonData)))
         return "未知结果"
