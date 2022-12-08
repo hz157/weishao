@@ -1,7 +1,14 @@
-# Auto Sign in For weishao
+# Auto Sign in For weishao 微哨自动打卡脚本
 - Programing Language: Python3
 - Library: requests
 - System: Every
+
+愿所有人的生活摆脱疫情的困扰
+---
+- 2022-12-08 结束微哨打卡
+- 2022-12-07 疫情“结束”了
+---
+
 
 # Warning
 Speaking of which, this is a weishao automatic punch-in script. Do not use for illegal purposes<br>
